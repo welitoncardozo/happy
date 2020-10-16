@@ -21,3 +21,4 @@ yarn-error.log*
 
 # datas
 uploads
+database.sqlite
