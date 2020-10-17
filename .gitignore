@@ -19,6 +19,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# datas
-uploads
+# database
 database.sqlite
+
+# files datas
+backend/uploads/*
+!backend/uploads/.gitkeep
