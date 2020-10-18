@@ -36,44 +36,44 @@ export default {
           open_on_weekends
         } = request.body;
       
-          const orphanagesRepository = getRepository(Orphanage);
-          const requestImages = request.files as Express.Multer.File[];
-          const images = requestImages.map(image => {
-            return { path: image.filename }
-          })
+        const orphanagesRepository = getRepository(Orphanage);
+        const requestImages = request.files as Express.Multer.File[];
+        const images = requestImages.map(image => {
+          return { path: image.filename }
+        })
 
-          const orphanageData = {
-            name,
-            latitude,
-            longitude,
-            about,
-            instructions,
-            opening_hours,
-            open_on_weekends,
-            images
-          };
+        const orphanageData = {
+          name,
+          latitude,
+          longitude,
+          about,
+          instructions,
+          opening_hours,
+          open_on_weekends: open_on_weekends == 'true',
+          images
+        };
 
-          const schema = Yup.object().shape({
-            name: Yup.string().required('O campo nome é obrigatório'),
-            latitude: Yup.number().required(),
-            longitude: Yup.number().required(),
-            about: Yup.string().required().max(300),
-            instructions: Yup.string().required(),
-            opening_hours: Yup.string().required(),
-            open_on_weekends: Yup.boolean().required(),
-            images: Yup.array(
-              Yup.object().shape({
-                path: Yup.string().required()
-              })
-            )
-          });
+        const schema = Yup.object().shape({
+          name: Yup.string().required('O campo nome é obrigatório'),
+          latitude: Yup.number().required(),
+          longitude: Yup.number().required(),
+          about: Yup.string().required().max(300),
+          instructions: Yup.string().required(),
+          opening_hours: Yup.string().required(),
+          open_on_weekends: Yup.boolean().required(),
+          images: Yup.array(
+            Yup.object().shape({
+              path: Yup.string().required()
+            })
+          )
+        });
 
-          await schema.validate(orphanageData, {
-            abortEarly: false
-          });
+        await schema.validate(orphanageData, {
+          abortEarly: false
+        });
 
-          const orphanage = orphanagesRepository.create(orphanageData);      
-          await orphanagesRepository.save(orphanage);
-          return response.status(201).json(orphanage);
+        const orphanage = orphanagesRepository.create(orphanageData);      
+        await orphanagesRepository.save(orphanage);
+        return response.status(201).json(orphanage);
     }
 };
